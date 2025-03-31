@@ -44,3 +44,10 @@ tasks.jar {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.named('bootJar') {
+	archiveFileName = "${project.name}.jar"
+	layered {
+		enabled = true
+	}
+}
