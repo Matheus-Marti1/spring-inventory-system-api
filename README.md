@@ -7,13 +7,13 @@
 ![Docker](https://img.shields.io/badge/Docker-24.0+-2496ED?logo=docker)
 ![Railway](https://img.shields.io/badge/Railway-Deploy-0B0D0E?logo=railway)
 
-API desenvolvida em Java com Spring Boot para gerenciamento completo de produtos, categorias, clientes e pedidos.
+API desenvolvida em Java com Spring Boot para gerenciamento de produtos, categorias, clientes e pedidos. Projeto realizado como parte do curso de Desenvolvimento de APIs com Spring Framework da Digital Innovation One (DIO).
 
 ## 📋 Tabela de Conteúdos
 - [Funcionalidades](#-funcionalidades)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Tecnologias Utilizadas](#%EF%B8%8F-tecnologias-utilizadas)
 - [Diagrama de Classes](#-diagrama-de-classes)
-- [Instalação e Uso](#-instalação-e-uso)
+- [Instalação e Uso](#%EF%B8%8F-instalação-e-uso)
 
 ## 🚀 Funcionalidades
 - **Gestão de Produtos**: CRUD completo com controle de estoque
