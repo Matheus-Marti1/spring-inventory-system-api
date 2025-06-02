@@ -1,8 +1,12 @@
 package me.dio.matheusmarti.springapi.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import me.dio.matheusmarti.springapi.dto.ItemPedidoRequest;
 import me.dio.matheusmarti.springapi.dto.PedidoRequest;
 import me.dio.matheusmarti.springapi.dto.PedidoResponse;
+import me.dio.matheusmarti.springapi.dto.PedidoResumoResponse;
 import me.dio.matheusmarti.springapi.model.Cliente;
 import me.dio.matheusmarti.springapi.model.ItemPedido;
 import me.dio.matheusmarti.springapi.model.Pedido;
@@ -15,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +31,8 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional
     public PedidoResponse criarPedido(PedidoRequest request) {
@@ -68,5 +76,26 @@ public class PedidoService {
         return pedidoRepository.findByIdWithItens(id)
                 .map(PedidoResponse::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
+    }
+
+    public List<PedidoResumoResponse> consultarPedidosAvancado(
+            Long clienteId,
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            BigDecimal totalMin,
+            BigDecimal totalMax
+    ) {
+        Query query = entityManager.createNativeQuery(
+                "CALL consultar_pedidos(:clienteId, :dataInicio, :dataFim, :totalMin, :totalMax)"
+        );
+        query.setParameter("clienteId", clienteId);
+        query.setParameter("dataInicio", dataInicio != null ? Date.valueOf(dataInicio) : null);
+        query.setParameter("dataFim", dataFim != null ? Date.valueOf(dataFim) : null);
+        query.setParameter("totalMin", totalMin);
+        query.setParameter("totalMax", totalMax);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> rows = query.getResultList();
+        return rows.stream().map(PedidoResumoResponse::fromRow).toList();
     }
 }
