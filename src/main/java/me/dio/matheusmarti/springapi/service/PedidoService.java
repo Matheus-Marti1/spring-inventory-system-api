@@ -96,6 +96,6 @@ public class PedidoService {
 
         @SuppressWarnings("unchecked")
         List<Object[]> rows = query.getResultList();
-        return rows.stream().map(PedidoResumoResponse::fromRow).toList();
+        return PedidoResumoResponse.fromRows(rows);
     }
 }
